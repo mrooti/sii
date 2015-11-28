@@ -1,0 +1,8 @@
+.info{
+	width: 100%;
+	background-color: orange;
+	z-index: 10000;
+	position: fixed;
+	text-align: center;
+	color:white;
+}

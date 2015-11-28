@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Alta de Materia</title>
+  <?php
+      include("../control/connection.php");
+      include("../estructura/head.php");
+  ?> 
+  </head>
+  <body>
+  <div id="info" class="info"></div>
+  <section id="container" >
+      <!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+      <!--header start-->
+      <?php
+          include("../estructura/header.php"); 
+      ?>
+      <!--header end-->
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN SIDEBAR MENU
+      *********************************************************************************************************************************************************** -->
+      <!--sidebar start-->
+      <?php
+          include("../estructura/main.php");
+      ?>
+      <!--sidebar end-->
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper site-min-height">
+          	<h3><i class="fa fa-angle-right"></i> Alta de Materia</h3>
+          	<div class="row mt">
+          		<div class="col-lg-12">
+            		<div class="form-panel">
+                      <h4 class="mb"><i class="fa fa-angle-right"></i>Ingresa los datos de la materia</h4>
+                      <form class="form-horizontal style-form" method="post" id="formulario" enctype="multipart/form-data">
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Titulo</label>
+                              <div class="col-sm-10">
+                                  <input type="text" class="form-control" name="titulo" id="titulo" required>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Creditos</label>
+                              <div class="col-sm-10">
+                                  <input type="number" class="form-control" name="creditos" id="creditos" required>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Codigo</label>
+                              <div class="col-sm-10">
+                                  <input type="text" class="form-control" name="codigo" id="codigo" required>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-sm-12" style="text-align:center;">
+                              <input type="submit" value="Guardar" id="guardar" name="guardar" class="btn btn-round btn-success">
+                              <input type="reset" class="btn btn-round btn-warning" value="Limpiar" id="cancelar" name="cancelar">
+                            </div>
+                          </div>
+                      </form>
+            		</div>
+          	</div>
+			
+		      </section>
+      </section>
+      <!-- /MAIN CONTENT -->
+
+      <!--main content end-->
+      <!--footer start-->
+      <footer class="site-footer">
+          <div class="text-center">
+              Todos los derechos reservados. Sistema Integral de Información. 2015
+              <a href="blank.html#" class="go-top">
+                  <i class="fa fa-angle-up"></i>
+              </a>
+          </div>
+      </footer>
+      <!--footer end-->
+  </section>
+    <!-- js placed at the end of the document so the pages load faster -->
+    <?php
+        include("../estructura/scripts.php");
+    ?>
+    <!--script for this page-->
+  <script>
+    $("#info").hide();
+    $("#formulario").submit(function(){
+        var data=$("#formulario").serialize();
+        $.ajax({
+          type: "POST",
+          url: "../control/ajax.php?option=7",
+          data: data,
+          success: function(data){
+              $("#info").html("<h3>Procesando</h3>");
+              $("#info").slideDown("slow");
+              
+          }
+        }).done(function(data){
+            if(data.indexOf("success")>=0){
+              $("#info").html("<h3>Materia Agregada Correctamente</h3>");
+              $("#info").slideDown(2000);
+              $("#info").slideUp(2000);
+              return false;
+            }
+            else{
+              $("#info").html("<h3>Existe un Problema "+data+" </h3>");
+              $("#info").slideDown(2000);
+              $("#info").slideUp(2000);
+              return false;
+            }
+            return false;  
+        });
+        return false; 
+      }
+    });
+  </script>
+
+  </body>
+</html>
