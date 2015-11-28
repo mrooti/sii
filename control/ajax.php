@@ -153,10 +153,11 @@
 				echo "error_2";
 			}
 		break;
-		case 8://alta de año
-			if(isset($_POST['ano'])){
-				$ano=seguridad($_POST['ano']);
-				if($mysqli->query("INSERT INTO ano_escolar (Id_Ano,Ano) VALUES (DEFAULT,'{$ano}')")){
+		case 8://alta de periodo
+			if(isset($_POST['inicio'])&&isset($_POST['fin'])){
+				$inicio=seguridad($_POST['inicio']);
+				$fin=seguridad($_POST['fin']);
+				if($mysqli->query("INSERT INTO periodo (Id_Periodo,Fecha_Inicio,Fecha_Fin,Estado) VALUES (DEFAULT,'{$inicio}','{$fin}',1)")){
 					echo "success";
 				}
 				else{
