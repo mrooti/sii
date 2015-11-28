@@ -152,6 +152,7 @@
 			else{
 				echo "error_2";
 			}
+			$mysqli->close();
 		break;
 		case 8://alta de periodo
 			if(isset($_POST['inicio'])&&isset($_POST['fin'])){
@@ -167,6 +168,98 @@
 			else{
 				echo "error_2";
 			}
+			$mysqli->close();
+		break;
+		case 9://alta de tipo de documento
+			if(isset($_POST['titulo'])&&!empty($_POST['titulo'])){
+				$titulo=seguridad($_POST['titulo']);
+				if($mysqli->query("INSERT INTO tipo_documento VALUES(DEFAULT,'{$titulo}',1)")){
+					echo "success";
+				}
+				else{
+					echo "error_1";
+				}
+			}else{
+				echo "error_2";
+			}
+			$mysqli->close();
+		break;
+		case 10://buscar alumno
+			if(isset($_POST['busqueda'])&&!empty($_POST['busqueda'])){
+				$busqueda=seguridad($_POST['busqueda']);
+				$resultado=$mysqli->query("SELECT * FROM alumno WHERE Nombres LIKE '%{$busqueda}%' || Apellido_P LIKE '%{$busqueda}%' || Apellido_M LIKE '%{$busqueda}%' || Curp LIKE '%{$busqueda}%'")or die("Error en: ".$mysqli->error);
+				while($row=$resultado->fetch_array(MYSQLI_ASSOC)){
+					echo "
+						<tr>
+							<td>{$row['Nombres']}</td>
+							<td>{$row['Apellido_P']}</td>
+							<td>{$row['Apellido_M']}</td>
+							<td><button class=\"btn btn-success btn-xs\" onclick=\"ver({$row['Id_Alumno']})\">Elegir</button></td>
+						</tr>
+					";
+				}
+			}
+			else{
+				echo "<tr><td>Alumno no encontrado</td></tr>";
+			}
+			$mysqli->close();
+		break;
+		case 11://listar tutores de alumno
+			if(isset($_POST['id'])&&!empty($_POST['id'])){
+				$id=seguridad($_POST['id']);
+				$resultado=$mysqli->query("SELECT Id_Tutor_Alumno, t.Id_Tutor, t.Nombres, t.Apellido_P, t.Apellido_M FROM tutor_alumno ta INNER JOIN tutor t ON t.Id_Tutor=ta.Id_Tutor WHERE ta.Estado='1' AND ta.Id_Alumno={$id}")or die("Error en: ".$mysli->error);
+				while($row=$resultado->fetch_array(MYSQLI_ASSOC)){
+					echo "
+						<tr>
+							<td>{$row['Nombres']}</td>
+							<td>{$row['Apellido_P']}</td>
+							<td>{$row['Apellido_M']}</td>
+							<td><button class=\"btn btn-success btn-xs\" onclick=\"eliminar({$row['Id_Tutor_Alumno']})\">Eliminar</button></td>
+						</tr>
+					"; 
+				}
+			}
+			else{
+				echo "<tr><td>No existen tutores relacionados con este alumno</td></tr>";
+			}
+			$mysqli->close();
+		break;
+		case 12://asignar tutor
+			if(isset($_POST['alumno'])&&isset($_POST['tutor'])&&!empty($_POST['alumno'])&&!empty($_POST['tutor'])){
+				$alumno=seguridad($_POST['alumno']);
+				$tutor=seguridad($_POST['tutor']);
+				$resultado=$mysqli->query("SELECT * FROM tutor_alumno WHERE Id_Tutor={$tutor}")or die("Error en: ".$mysqli->error);
+				if(!$resultado->num_rows>0){
+					if($mysqli->query("INSERT INTO tutor_alumno VALUES(DEFAULT,{$alumno},{$tutor},'1')")){
+						echo $alumno;
+					}
+					else{
+						echo "-1";
+					}
+				}
+				else{
+					echo "-2";
+				}
+			}
+			else{
+				echo "0";
+			}
+			$mysqli->close();
+		break;
+		case 13://dar de baja tutor
+			if(isset($_POST['tutor'])&&!empty($_POST['tutor'])){
+				$tutor=seguridad($_POST['tutor']);
+				if($mysqli->query("UPDATE tutor_alumno SET Estado='0' WHERE Id_Tutor_Alumno={$tutor}")){
+					echo "success";
+				}
+				else{
+					echo "error_1";
+				}
+			}
+			else{
+				echo "error_2";
+			}
+			$mysqli->close();
 		break;
 	}
 ?>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <title>Alta de Periodo</title>
+    <title>Alta de Tipo de Documento</title>
   <?php
       include("../control/connection.php");
       include("../estructura/head.php");
@@ -34,22 +34,16 @@
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper site-min-height">
-          	<h3><i class="fa fa-angle-right"></i> Alta de Periodo Escolar</h3>
+          	<h3><i class="fa fa-angle-right"></i> Alta de Tipo de Documento</h3>
           	<div class="row mt">
           		<div class="col-lg-12">
             		<div class="form-panel">
-                      <h4 class="mb"><i class="fa fa-angle-right"></i>Ingresa los datos del periodo</h4>
+                      <h4 class="mb"><i class="fa fa-angle-right"></i>Ingresa el tipo de documento</h4>
                       <form class="form-horizontal style-form" method="post" id="formulario" enctype="multipart/form-data">
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Fecha de Inicio</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Titulo del documento</label>
                               <div class="col-sm-10">
-                                  <input type="date" class="form-control" name="inicio" id="inicio" required>
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Fecha de Fin</label>
-                              <div class="col-sm-10">
-                                  <input type="date" class="form-control" name="Fin" id="Fin" required>
+                                  <input type="text" class="form-control" name="titulo" id="titulo" required>
                               </div>
                           </div>
                           <div class="form-group">
@@ -89,7 +83,7 @@
         var data=$("#formulario").serialize();
         $.ajax({
           type: "POST",
-          url: "../control/ajax.php?option=8",
+          url: "../control/ajax.php?option=9",
           data: data,
           success: function(data){
               $("#info").html("<h3>Procesando</h3>");
@@ -98,7 +92,7 @@
           }
         }).done(function(data){
             if(data.indexOf("success")>=0){
-              $("#info").html("<h3>Periodo Agregado Correctamente</h3>");
+              $("#info").html("<h3>Tipo de Documento Agregado Correctamente</h3>");
               $("#info").slideDown(2000);
               $("#info").slideUp(2000);
               return false;
