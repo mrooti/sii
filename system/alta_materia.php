@@ -47,6 +47,12 @@
                               </div>
                           </div>
                           <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Grado</label>
+                              <div class="col-sm-10">
+                                  <input type="number" class="form-control" name="grado" id="grado" min="1" required>
+                              </div>
+                          </div>
+                          <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Creditos</label>
                               <div class="col-sm-10">
                                   <input type="number" class="form-control" name="creditos" id="creditos" required>

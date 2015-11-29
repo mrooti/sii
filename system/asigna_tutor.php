@@ -41,9 +41,10 @@
                       <h4 class="mb"><i class="fa fa-angle-right"></i>Ingresa los datos solicitados</h4>
                       <form class="form-horizontal style-form" method="post" id="formulario" enctype="multipart/form-data">
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">CURP de Alumno</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Buscar Alumno</label>
                               <div class="col-sm-10">
-                                <input type="text" id="curp" name="curp" class="form-control" required>   
+                                <input type="text" id="curp" name="curp" class="form-control" required>
+                                <span class="help-block">Puedes buscar por Nombre, Apellido o CURP</span>   
                               </div>
                           </div>
                           <div class="row">
