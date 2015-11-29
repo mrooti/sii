@@ -38,7 +38,7 @@
           	<div class="row mt">
           		<div class="col-lg-12">
             		<div class="form-panel">
-                      <h4 class="mb"><i class="fa fa-angle-right"></i>Ingresa el tipo de documento</h4>
+                      <h4 class="mb"><i class="fa fa-angle-right"></i>Ingresa la información solicitada</h4>
                       <div id="form">
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Buscar Profesor</label>
