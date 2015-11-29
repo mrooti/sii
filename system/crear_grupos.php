@@ -90,55 +90,57 @@
                               </div><!--fin col 6-->
                           </div>
                           <br>
-                          <div class="form-group">
-                            <label class="col-sm-2 col-sm-2 control-label">Seleccionar Periodo</label>
-                              <div class="col-sm-10">
-                                <select class="form-control" name="periodo" id="periodo">
-                                  <option value="0">Selecciona un periodo</option>
-                                  <?php
-                                    $resultado=$mysqli->query("SELECT Id_Periodo, Fecha_Inicio, Fecha_Fin FROM periodo WHERE Estado='1'")or die("Error en: ".$mysqli->error);
-                                    while($row=$resultado->fetch_array(MYSQLI_ASSOC)){
-                                      echo "<option value=\"{$row['Id_Periodo']}\">{$row['Fecha_Inicio']} a {$row['Fecha_Fin']}</option>";
-                                    }
-                                  ?>
-                                </select>
-                                <span class="help-block">Periodo Actual</span>   
-                              </div>
-                          </div>
-                          <div class="form-group">
-                            <label class="col-sm-2 col-sm-2 control-label">Seleccionar Materia</label>
-                              <div class="col-sm-10">
-                                <select class="form-control" name="materia" id="materia">
-                                  <option value="0">Selecciona un materia</option>
-                                  <?php
-                                    $resultado=$mysqli->query("SELECT Id_Materia, Titulo FROM materia WHERE Estado='1'")or die("Error en: ".$mysqli->error);
-                                    while($row=$resultado->fetch_array(MYSQLI_ASSOC)){
-                                      echo "<option value=\"{$row['Id_Materia']}\">{$row['Titulo']}</option>";
-                                    }
-                                    $mysqli->close();
-                                  ?>
-                                </select>
-                                <span class="help-block">Escoje una materia</span> 
-                              </div>
-                          </div>
-                          <div class="form-group">
-                            <label class="col-sm-2 col-sm-2 control-label">Ingresa el Grupo</label>
-                            <div class="col-sm-10">
-                              <input type="text" class="form-control" name="grupo" id="grupo" required>
-                              <span class="help-block">Ejemplo A, B, Grupo 1, Grupo 2, etc...</span>
+                          <div id="crear_grupo">
+                            <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Seleccionar Periodo</label>
+                                <div class="col-sm-10">
+                                  <select class="form-control" name="periodo" id="periodo">
+                                    <option value="0">Selecciona un periodo</option>
+                                    <?php
+                                      $resultado=$mysqli->query("SELECT Id_Periodo, Fecha_Inicio, Fecha_Fin FROM periodo WHERE Estado='1'")or die("Error en: ".$mysqli->error);
+                                      while($row=$resultado->fetch_array(MYSQLI_ASSOC)){
+                                        echo "<option value=\"{$row['Id_Periodo']}\">{$row['Fecha_Inicio']} a {$row['Fecha_Fin']}</option>";
+                                      }
+                                    ?>
+                                  </select>
+                                  <span class="help-block">Periodo Actual</span>   
+                                </div>
                             </div>
-                          </div>
-                          <div class="form-group" style="text-align:center;" id="boton_crear">
-                            <button class="btn btn-round btn-success" id="crear" name="crear">Crear</button>
-                          </div>
-                          <div class="form-group">
+                            <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Seleccionar Materia</label>
+                                <div class="col-sm-10">
+                                  <select class="form-control" name="materia" id="materia">
+                                    <option value="0">Selecciona un materia</option>
+                                    <?php
+                                      $resultado=$mysqli->query("SELECT Id_Materia, Titulo FROM materia WHERE Estado='1'")or die("Error en: ".$mysqli->error);
+                                      while($row=$resultado->fetch_array(MYSQLI_ASSOC)){
+                                        echo "<option value=\"{$row['Id_Materia']}\">{$row['Titulo']}</option>";
+                                      }
+                                      $mysqli->close();
+                                    ?>
+                                  </select>
+                                  <span class="help-block">Escoje una materia</span> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Ingresa el Grupo</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" name="grupo" id="grupo" required>
+                                <span class="help-block">Ejemplo A, B, Grupo 1, Grupo 2, etc...</span>
+                              </div>
+                            </div>
+                            <div class="form-group" style="text-align:center;" id="boton_crear">
+                              <button class="btn btn-round btn-success" id="crear" name="crear">Crear</button>
+                            </div>
+                            </div><!--fin crear grupo-->
+                          <div class="form-group" id="buscar_alumno">
                             <label class="col-sm-2 col-sm-2 control-label">Buscar Alumnos</label>
                             <div class="col-sm-10">
                               <input type="text" class="form-control" name="alumno" id="alumno" required>
                               <span class="help-block">Puedes buscar por Nombre, Apellido o CURP</span>
                             </div>
                           </div>
-                          <div class="row">
+                          <div class="row" id="tablas_grupo">
                             <div class="col-md-6">
                                   <div class="content-panel">
                                       <table class="table table-striped table-advance table-hover">
@@ -207,6 +209,9 @@
     <!--script for this page-->
   <script>
     $("#info").hide();
+    $("#crear_grupo").hide();
+    $("#buscar_alumno").hide();
+    $("#tablas_grupo").hide();
     $("#curp").keyup(function(){
       var busqueda=$("#curp").val();
       $.post("../control/ajax.php?option=14",{busqueda:busqueda}).done(function(data){
@@ -216,13 +221,14 @@
     function elegir(tipo,id){
       switch(tipo){
         case 1://elegir
-          localStorage.setItem("data",id);
+          localStorage.setItem("data_profesor",id);
           $("#periodo").attr("disabled",false);
           $("#grupo").attr("readonly",false);
-          $("#materia").attr("readonly",false);
+          $("#materia").attr("disabled",false);
           $.post("../control/ajax.php?option=15",{profesor:id}).done(function(data){
             $("#resultado_grupos").html(data);
           });
+          $("#crear_grupo").slideDown("slow");
         break;
         case 2://eliminar
           $.post("../control/ajax.php?option=16",{registro:id}).done(function(data){
@@ -243,6 +249,42 @@
           var periodo=localStorage.getItem("data_periodo");
           var grupo=localStorage.getItem("data_grupo");
           var alumno=id;
+          var profesor=localStorage.getItem("data_profesor");
+          var materia=localStorage.getItem("data_materia");
+          $.post("../control/ajax.php?option=19",{periodo:periodo,grupo:grupo,alumno:alumno,profesor:profesor,materia:materia}).done(function(data){
+              if(data=="success"){
+                $("#info").html("<h3>Alumno Agregado Correctamente</h3>");
+                $("#info").slideDown(2000);
+                $("#info").slideUp(2000);
+                $.post("../control/ajax.php?option=18",{periodo:periodo,grupo:grupo,profesor:profesor}).done(function(data){
+                  $("#resultado_lista").html(data);
+                });
+                $.post("../control/ajax.php?option=15",{profesor:id}).done(function(data){
+                  $("#resultado_grupos").html(data);
+                });
+              }else{
+                $("#info").html("<h3>"+data+"</h3>");
+                $("#info").slideDown(2000);
+                $("#info").slideUp(2000);
+              }
+          });
+        break;
+        case 4://eliminar alumnos de grupo
+          $.post("../control/ajax.php?option=20",{cursa_materia:id}).done(function(data){
+            if(data=="success"){
+                $("#info").html("<h3>Alumno Eliminado Correctamente</h3>");
+                $("#info").slideDown(2000);
+                $("#info").slideUp(2000);
+            } 
+            else{
+                $("#info").html("<h3>"+data+"</h3>");
+                $("#info").slideDown(2000);
+                $("#info").slideUp(2000);
+            }
+          });
+          $.post("../control/ajax.php?option=18",{periodo:periodo,grupo:grupo,profesor:profesor}).done(function(data){
+            $("#resultado_lista").html(data);
+          });
         break;
       }
       return false;
@@ -258,6 +300,14 @@
         $("#info").html("<h3>Grupo creado, agrege los alumnos al grupo</h3>");
         $("#info").slideDown(2000);
         $("#info").slideUp(4000);
+        var periodo=localStorage.getItem("data_periodo");
+        var grupo=localStorage.getItem("data_grupo");
+        var profesor=localStorage.getItem("data_profesor");
+        $.post("../control/ajax.php?option=18",{periodo:periodo,grupo:grupo,profesor:profesor}).done(function(data){
+          $("#resultado_lista").html(data);
+        });
+        $("#buscar_alumno").slideDown("slow");
+        $("#tablas_grupo").slideDown("slow");
         //mostrar tablas
       }
       else{

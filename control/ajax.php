@@ -339,7 +339,7 @@
 			}
 			$mysqli->close();
 		break;
-		case 17:
+		case 17://buscar alumnos de nuevo
 			if(isset($_POST['busqueda'])&&!empty($_POST['busqueda'])){
 				$busqueda=seguridad($_POST['busqueda']);
 				$resultado=$mysqli->query("SELECT * FROM alumno WHERE Estado='1' AND Nombres LIKE '%{$busqueda}%' || Apellido_P LIKE '%{$busqueda}%' || Apellido_M LIKE '%{$busqueda}%' || Curp LIKE '%{$busqueda}%'")or die("Error en: ".$mysqli->error);
@@ -359,6 +359,83 @@
 			}
 			else{
 				echo "<tr><td>Alumno no encontrado</td></tr>";
+			}
+			$mysqli->close();
+		break;
+		case 18://listar alumnos de un grupo
+			if(isset($_POST['periodo'])&&isset($_POST['grupo'])&&isset($_POST['profesor'])&&!empty($_POST['periodo'])&&!empty($_POST['grupo'])&&!empty($_POST['profesor'])){
+				$periodo=seguridad($_POST['periodo']);
+				$grupo=seguridad($_POST['grupo']);
+				$profesor=seguridad($_POST['profesor']);
+				$resultado=$mysqli->query("SELECT Id_Cursa_Materia, a.Nombres, a.Apellido_P, a.Apellido_M FROM cursa_materia cm INNER JOIN alumno a ON a.Id_Alumno=cm.Id_Alumno WHERE Id_Profesor={$profesor} AND Id_Periodo={$periodo} AND Grupo='{$grupo}' AND cm.Estado='1'")or die("Error en: ".$mysqli->error);
+				if(!$resultado->num_rows>0){
+					echo "<tr><td>No hay alumnos registrados</td></tr>";
+				}
+				while($row=$resultado->fetch_array(MYSQLI_ASSOC)){
+					echo "
+						<tr>
+							<td>{$row['Nombres']}</td>
+							<td>{$row['Apellido_P']}</td>
+							<td>{$row['Apellido_M']}</td>
+							<td><button class=\"btn btn-success btn-xs\" onclick=\"elegir(4,{$row['Id_Cursa_Materia']})\">Eliminar</button></td>
+						</tr>
+					";
+				}
+			}
+			else{
+				echo "<tr><td>No hay alumnos registrados</td></tr>";
+			}
+			$mysqli->close();
+		break;
+		case 19://alta de alumnos en un grupo
+			if(isset($_POST['materia'])&&!empty($_POST['materia'])&&isset($_POST['periodo'])&&isset($_POST['grupo'])&&isset($_POST['profesor'])&&!empty($_POST['periodo'])&&!empty($_POST['grupo'])&&!empty($_POST['profesor'])&&isset($_POST['alumno'])&&!empty($_POST['alumno'])){
+				$periodo=seguridad($_POST['periodo']);
+				$grupo=seguridad($_POST['grupo']);
+				$profesor=seguridad($_POST['profesor']);
+				$alumno=seguridad($_POST['alumno']);
+				$materia=seguridad($_POST['materia']);
+				//hay que limpiar que si el alumno existe pero esta con estado cero, hay que solo cambiarle el estado y no dar ptra alta
+				$resultado=$mysqli->query("SELECT * FROM cursa_materia WHERE Id_Periodo={$periodo} AND Grupo='{$grupo}' AND Id_Profesor={$profesor} AND Id_Alumno={$alumno} AND Id_Materia={$materia}")or die("Error en: ".$mysqli->error);
+				if(!$resultado->num_rows>0){
+					if($mysqli->query("INSERT INTO cursa_materia VALUES(DEFAULT,'{$materia}','{$periodo}','{$profesor}','{$alumno}','{$grupo}','1')" )){
+						echo "success";
+					}
+					else{
+						echo "error_1";
+					}
+				}
+				else{
+					$row=$resultado->fetch_array(MYSQLI_ASSOC);
+					if($row['Estado']=="0"){
+						if($mysqli->query("UPDATE cursa_materia SET Estado='1' WHERE Id_Periodo={$periodo} AND Grupo='{$grupo}' AND Id_Profesor={$profesor} AND Id_Alumno={$alumno} AND Id_Materia={$materia} AND Estado='0'")){
+							echo "success";
+						}
+						else{
+							echo "error_2";
+						}
+					}else{
+						echo "El alumno ya se encuentra registrado en este grupo";
+					}
+				}
+				
+			}
+			else{
+				echo "error_3";
+			}
+			$mysqli->close();
+		break;
+		case 20://baja de alumno de grupo
+			if(isset($_POST['cursa_materia'])&&!empty($_POST['cursa_materia'])){
+				$cursa_materia=seguridad($_POST['cursa_materia']);
+				if($mysqli->query("UPDATE cursa_materia SET Estado='0' WHERE Id_Cursa_Materia={$cursa_materia}")){
+					echo "success";
+				}
+				else{
+					echo "error_1";
+				}
+			}
+			else{
+				echo "error_2";
 			}
 			$mysqli->close();
 		break;
