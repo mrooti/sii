@@ -19,7 +19,7 @@
     </div>
     <div class="top-menu">
     	<ul class="nav pull-right top-menu">
-            <li><a class="logout" href="login.html">Logout</a></li>
+            <li><button class="logout" id="salir">Salir</a></li>
     	</ul>
     </div>
 </header>

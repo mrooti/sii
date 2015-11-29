@@ -34,46 +34,23 @@
 	  <div id="login-page">
 	  	<div class="container">
 	  	
-		      <form class="form-login" action="index.html">
-		        <h2 class="form-login-heading">sign in now</h2>
+		      <form class="form-login" method="post" id="formulario">
+		        <h2 class="form-login-heading">Inicia Sesión</h2>
 		        <div class="login-wrap">
-		            <input type="text" class="form-control" placeholder="User ID" autofocus>
+		            <input type="text" class="form-control" placeholder="CURP" name="curp" id="curp" autofocus>
 		            <br>
-		            <input type="password" class="form-control" placeholder="Password">
-		            <label class="checkbox">
-		                <span class="pull-right">
-		                    <a data-toggle="modal" href="login.html#myModal"> Forgot Password?</a>
-		
-		                </span>
-		            </label>
-		            <button class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> SIGN IN</button>
+		            <input type="password" name="contrasena" id="contrasena" class="form-control" placeholder="Contraseña">
+		            <br>
+		            <select class="form-control" name="tio" id="tipo">
+		            	<option value="2">Administrador</option>
+		            	<option value="1">Alumno</option>
+		            	<option value="4">Profesor</option>
+		            	<option value="3">Tutor</option>
+		            </select>
+		            <br>
+		            <button class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> Iniciar</button>
 		            <hr>
-		            
-		            
-		
 		        </div>
-		
-		          <!-- Modal -->
-		          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
-		              <div class="modal-dialog">
-		                  <div class="modal-content">
-		                      <div class="modal-header">
-		                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		                          <h4 class="modal-title">Forgot Password ?</h4>
-		                      </div>
-		                      <div class="modal-body">
-		                          <p>Enter your e-mail address below to reset your password.</p>
-		                          <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
-		
-		                      </div>
-		                      <div class="modal-footer">
-		                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-		                          <button class="btn btn-theme" type="button">Submit</button>
-		                      </div>
-		                  </div>
-		              </div>
-		          </div>
-		          <!-- modal -->
 		
 		      </form>	  	
 	  	
@@ -89,8 +66,23 @@
     <script type="text/javascript" src="assets/js/jquery.backstretch.min.js"></script>
     <script>
         $.backstretch("assets/img/login-bg.jpg", {speed: 500});
+        $("#formulario").submit(function(){
+        	var curp=$("#curp").val();
+        	var contrasena=$("#contrasena").val();
+        	var tipo=$("#tipo").val();
+        	localStorage.setItem("data_tipo_user",tipo);
+        	$.post("control/ajax.php?option=27",{usuario:curp,password:contrasena,tipo:tipo}).done(function(data){
+        		if(data=="success"){
+        			alert("Sesión iniciada correctamente");
+        			window.location.href="system/blank.php";
+        		}
+        		else{
+        			alert(data);
+        		}
+        	});
+        	return false;
+        });
     </script>
-
 
   </body>
 </html>

@@ -1,6 +1,7 @@
 <?php
 	include("connection.php");
 	include("security.php");
+	include("session.php");
 	switch(seguridad($_GET['option'])){
 		case 1:
 			if(isset($_POST['estado'])){
@@ -579,6 +580,159 @@
 				}
 				else{
 					echo "error_1";
+				}
+			}
+			else{
+				echo "error_2";
+			}
+			$mysqli->close();
+		break;
+		case 27://session
+			if(isset($_POST['usuario'])&&isset($_POST['password'])&&!empty($_POST['usuario'])&&!empty($_POST['password'])&&isset($_POST['tipo'])&&!empty($_POST['tipo'])){
+				$usuario=seguridad($_POST['usuario']);
+				$password=seguridad($_POST['password']);
+				$tipo=seguridad($_POST['tipo']);
+				if(crear($usuario,$password,$tipo)){
+					echo "success";
+				}
+				else{
+					echo "error_1";
+				}
+			}else{
+				echo "error_2";
+			}
+		break;
+		case 28://comprobar sesion
+			session_start();
+			//tipo de permisos, 0 todos, 1 alumnos, 2 admin, 3 tutor, 4 profe
+			if(isset($_SESSION['usuario'])&&!empty($_SESSION['tipo'])){
+				if(isset($_POST['permiso'])&&!empty($_POST['permiso'])){
+					$usuario=seguridad($_SESSION['usuario']);
+					$tipo=$_SESSION['tipo'];
+					$permiso=seguridad($_POST['permiso']);
+					$codigo=$_SESSION['codigo'];
+					$ip=obtenerIP();
+					
+					switch($tipo){
+						case 1:
+							if($permiso==$tipo){
+								$resultado=$mysqli->query("SELECT * FROM sesion_alumno WHERE Id_Alumno={$usuario} AND Codigo='{$codigo}' AND IP='{$ip}'");
+								if($resultado->num_rows>0){
+									echo "success";
+								}
+								else{
+									session_destroy();
+									$mysqli->query("DELETE FROM sesion_alumno WHERE Id_Alumno={$usuario}")or die("Error en: ".$mysli->error);
+									echo "error_0";
+								}
+							}
+							else{
+								echo "error_1";
+							}
+							
+						break;
+						case 2:
+							if($permiso==$tipo){
+								$resultado=$mysqli->query("SELECT * FROM sesion_administrador WHERE Id_Administrador={$usuario} AND Codigo='{$codigo}' AND IP='{$ip}'");
+								if($resultado->num_rows>0){
+									echo "success";
+								}
+								else{
+									session_destroy();
+									$mysqli->query("DELETE FROM sesion_administrador WHERE Id_Administrador={$usuario}")or die("Error en: ".$mysli->error);
+									echo "error_0";
+								}
+							}
+							else{
+								echo "error_1";
+							}
+						break;
+						case 3:
+							if($permiso==$tipo){
+								$resultado=$mysqli->query("SELECT * FROM sesion_tutor WHERE Id_Tutor={$usuario} AND Codigo='{$codigo}' AND IP='{$ip}'");
+								if($resultado->num_rows>0){
+									echo "success";
+								}
+								else{
+									session_destroy();
+									$mysqli->query("DELETE FROM sesion_tutor WHERE Id_Tutor={$usuario}")or die("Error en: ".$mysli->error);
+									echo "error_0";
+								}
+							}
+							else{
+								echo "error_1";
+							}
+						break;
+						case 4:
+							if($permiso==$tipo){
+								$resultado=$mysqli->query("SELECT * FROM sesion_profesor WHERE Id_Profesor={$usuario} AND Codigo='{$codigo}' AND IP='{$ip}'");
+								if($resultado->num_rows>0){
+									echo "success";
+								}
+								else{
+									session_destroy();
+									$mysqli->query("DELETE FROM sesion_profesor WHERE Id_Profesor={$usuario}")or die("Error en: ".$mysli->error);
+									echo "error_0";
+								}
+							}
+							else{
+								echo "error_1";
+							}
+						break;
+					}
+				}
+				else{
+					echo "error_2";
+				}
+			}
+			else{
+				echo "error_3";
+			}
+			$mysqli->close();
+		break;
+		case 29://terminar sesión
+			if(isset($_POST['terminar'])&&!empty($_POST['terminar'])){
+				session_start();
+				$usuario=seguridad($_SESSION['usuario']);
+				$tipo=seguridad($_SESSION['tipo']);
+				$tipo=seguridad($_POST['terminar']);
+				switch($tipo){
+					case 1://alumno
+						if($mysqli->query("DELETE FROM sesion_alumno WHERE Id_Alumno={$usuario}")or die("Error en: ".$mysli->error)){
+							session_destroy();
+							echo "success";
+						}
+						else{
+							echo "error_1";
+						}
+					break;
+					case 2://administrador
+						if($mysqli->query("DELETE FROM sesion_administrador WHERE Id_Administrador={$usuario}")or die("Error en: ".$mysli->error)){
+							session_destroy();
+							echo "success";
+						}
+						else{
+							echo "error_1";
+						}
+					break;
+					case 3://tutor
+						if($mysqli->query("DELETE FROM sesion_tutor WHERE Id_Tutor={$usuario}")or die("Error en: ".$mysli->error)){
+							session_destroy();
+							echo "success";
+						}
+						else{
+							echo "error_1";
+						}
+					break;
+					case 4://profesor
+						if($mysqli->query("DELETE FROM sesion_profesor WHERE Id_Profesor={$usuario}")or die("Error en: ".$mysli->error)){
+							session_destroy();
+							echo "success";
+						}
+						else{
+							echo "error_1";
+						}
+					break;
 				}
 			}
 			else{
