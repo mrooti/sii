@@ -3,9 +3,9 @@
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
         
-        	  <p class="centered"><a href="profile.html"><img src="../assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+        	  <p class="centered"><a href="blank.php"><img src="../assets/img/perfil.jpg" class="img-circle" width="60"></a></p>
         	  <h5 class="centered">
-               <?php//mostrar nombres
+               <?php
                     include("../control/connection.php");
                     session_start();
                     if(isset($_SESSION['usuario'])&&isset($_SESSION['tipo'])){
@@ -43,9 +43,23 @@
                     }
                ?>
               </h5>
-        	  	<?php//mostrar menu adecuado
+        	  	<?php 
+                    $tipo=$_SESSION['tipo'];
                     switch($tipo){
                         case 1://alumnos
+                            echo "
+                                <li class=\"mt\">
+                                    <a href=\"index.html\">
+                                        <i class=\"fa fa-dashboard\"></i>
+                                        <span>Materias</span>
+                                    </a>
+                                    <ul class=\"sub\">
+                                        <li><a  href=\"materias_alumno.php\">Grupos y Calificaciones</a></li>
+                                    </ul>
+                                </li>
+                                ";
+                        break;
+                        case 2://administradores
                             echo "
                                 <li class=\"mt\">
                                     <a href=\"index.html\">
@@ -69,6 +83,7 @@
                                         <li><a  href=\"asigna_tutor.php\">Asignar Tutores</a></li>
                                         <li><a  href=\"#\">Listar Grupos</a></li>
                                         <li><a  href=\"crear_grupos.php\">Crear Grupos</a></li>
+                                        <li><a href=\"constancias.php\">Constancia</a></li>
                                     </ul>
                                 </li>
                                 <li class=\"sub-menu\">
@@ -81,14 +96,31 @@
                                     </ul>
                                 </li>";
                         break;
-                        case 2://administradores
-
-                        break;
                         case 3://tutores
-
+                            echo "
+                                <li class=\"mt\">
+                                    <a href=\"index.html\">
+                                        <i class=\"fa fa-dashboard\"></i>
+                                        <span>Materias</span>
+                                    </a>
+                                    <ul class=\"sub\">
+                                        <li><a  href=\"materias_alumno_tutor.php\">Grupos y Calificaciones</a></li>
+                                    </ul>
+                                </li>
+                                ";
                         break;
                         case 4://profesores
-
+                            echo "
+                                <li class=\"mt\">
+                                    <a href=\"index.html\">
+                                        <i class=\"fa fa-dashboard\"></i>
+                                        <span>Calificaciones</span>
+                                    </a>
+                                    <ul class=\"sub\">
+                                        <li><a  href=\"calificaciones_profesor.php\">Grupos y Calificaciones</a></li>
+                                    </ul>
+                                </li>
+                                ";
                         break;
                     }
                 ?>

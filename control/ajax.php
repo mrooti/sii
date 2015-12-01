@@ -557,12 +557,24 @@
 					}
 				}
 				else{
-					if($mysqli->query("UPDATE calificacion_curso SET Calificacion='{$cali}' WHERE Id_Calificacion_Curso={$id}")){
-						echo "success";
+					$row=$resultado->fetch_array(MYSQLI_ASSOC);
+					if($row['Unidad']==$unidad){
+						if($mysqli->query("UPDATE calificacion_curso SET Calificacion='{$cali}' WHERE Id_Calificacion_Curso={$id}")){
+							echo "success";
+						}
+						else{
+							echo "error_2";
+						}
 					}
 					else{
-						echo "error_2";
+						if($mysqli->query("INSERT INTO calificacion_curso VALUES(DEFAULT,{$id},'{$unidad}','{$cali}','1')")){
+							echo "success";
+						}
+						else{
+							echo "error_1";
+						}
 					}
+					
 				}
 				
 			}
@@ -740,10 +752,52 @@
 			}
 			$mysqli->close();
 		break;
+		case 30://listar calificaciones de materia
+			if(isset($_POST['id'])&&!empty($_POST['id'])){
+				$id=seguridad($_POST['id']);
+				$resultado=$mysqli->query("SELECT * FROM calificacion_curso WHERE Id_Cursa_Materia={$id}")or die("Error en: ".$mysqli->error);
+				if(!$resultado->num_rows>0){
+					echo "<tr><td>No hay calificaciones capturadas</td></tr>";
+				}
+				while($row=$resultado->fetch_array(MYSQLI_ASSOC)){
+					echo "
+						<tr>
+							<td>{$row['Unidad']}</td>
+							<td>{$row['Calificacion']}</td>
+						</tr>
+					";
+				}
+			}else{
+
+			}
+		break;
+		case 31://busca alumno para hacer pdf
+			if(isset($_POST['busqueda'])&&!empty($_POST['busqueda'])){
+				$busqueda=seguridad($_POST['busqueda']);
+				$resultado=$mysqli->query("SELECT * FROM alumno WHERE Estado='1' AND Nombres LIKE '%{$busqueda}%' || Apellido_P LIKE '%{$busqueda}%' || Apellido_M LIKE '%{$busqueda}%' || Curp LIKE '%{$busqueda}%'")or die("Error en: ".$mysqli->error);
+				if(!$resultado->num_rows>0){
+					echo "<tr><td>Alumno no encontrado</td></tr>";
+				}
+				while($row=$resultado->fetch_array(MYSQLI_ASSOC)){
+					echo "
+						<tr>
+							<td>{$row['Nombres']}</td>
+							<td>{$row['Apellido_P']}</td>
+							<td>{$row['Apellido_M']}</td>
+							<td><a class=\"btn btn-success btn-xs\" href=\"pdf.php?id={$row['Id_Alumno']}\">Generar</a></td>
+						</tr>
+					";
+				}
+			}
+			else{
+				echo "<tr><td>Alumno no encontrado</td></tr>";
+			}
+			$mysqli->close();
+		break;
 		case 40://baja de alumno
 			if(isset($_POST['id'])){
 				$service = seguridad($_POST['id']);
-				if($mysqli->query("DELETE FROM alumno WHERE Id_Alumno=".$service)){
+				if($mysqli->query("UPDATE alumno SET Estado='0' WHERE Id_Alumno=".$service)){
 					echo "success";
 				}
 				else{
@@ -757,7 +811,7 @@
 		case 41:
 			if(isset($_POST['id'])){
 				$service = seguridad($_POST['id']);
-				if($mysqli->query("DELETE FROM profesor WHERE Id_Profesor=".$service)){
+				if($mysqli->query("UPDATE profesor SET Estado='0' WHERE Id_Profesor=".$service)){
 					echo "success";
 				}
 				else{
@@ -771,7 +825,7 @@
 		case 42:
 			if(isset($_POST['id'])){
 				$service = seguridad($_POST['id']);
-				if($mysqli->query("DELETE FROM administrador WHERE Id_Administrador=".$service)){
+				if($mysqli->query("UPDATE administrador SET Estado='0' WHERE Id_Administrador=".$service)){
 					echo "success";
 				}
 				else{
@@ -785,7 +839,7 @@
 		case 43:
 			if(isset($_POST['id'])){
 				$service = seguridad($_POST['id']);
-				if($mysqli->query("DELETE FROM tutor WHERE Id_Tutor=".$service)){
+				if($mysqli->query("UPDATE tutor SET Estado='0' WHERE Id_Tutor=".$service)){
 					echo "success";
 				}
 				else{

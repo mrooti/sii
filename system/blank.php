@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <title>DASHGUM - Bootstrap Admin Template</title>
+    <title>Bienvenido</title>
   <?php
       include("../control/connection.php");
       include("../estructura/head.php");
   ?> 
   </head>
-  <body>
+  <body onload="getTime()">
   <section id="container" >
       <!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
@@ -33,10 +33,9 @@
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper site-min-height">
-          	<h3><i class="fa fa-angle-right"></i> Blank Page</h3>
           	<div class="row mt">
           		<div class="col-lg-12">
-          		<p>Place your content here.</p>
+          		<div id="showtime"></div>
           		</div>
           	</div>
 			
@@ -61,12 +60,33 @@
         include("../estructura/scripts.php");
     ?>
     <!--script for this page-->
+    <script type="text/javascript" src="../assets/js/jquery.backstretch.min.js"></script>
+    <script>
+        $.backstretch("../assets/img/ny.jpg", {speed: 500});
+    </script>
   <script>
-      //custom select box
-      $(function(){
-          $('select.styled').customSelect();
-      });
-  </script>
+        function getTime()
+        {
+            var today=new Date();
+            var h=today.getHours();
+            var m=today.getMinutes();
+            var s=today.getSeconds();
+            // add a zero in front of numbers<10
+            m=checkTime(m);
+            s=checkTime(s);
+            document.getElementById('showtime').innerHTML=h+":"+m+":"+s;
+            t=setTimeout(function(){getTime()},500);
+        }
+
+        function checkTime(i)
+        {
+            if (i<10)
+            {
+                i="0" + i;
+            }
+            return i;
+        }
+    </script>
 
   </body>
 </html>
