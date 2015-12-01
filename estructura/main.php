@@ -3,80 +3,96 @@
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
         
-        	  <p class="centered"><a href="profile.html"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
-        	  <h5 class="centered">Marcel Newman</h5>
-        	  	
-            <li class="mt">
-                <a href="index.html">
-                    <i class="fa fa-dashboard"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
+        	  <p class="centered"><a href="profile.html"><img src="../assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+        	  <h5 class="centered">
+               <?php//mostrar nombres
+                    include("../control/connection.php");
+                    session_start();
+                    if(isset($_SESSION['usuario'])&&isset($_SESSION['tipo'])){
+                        $usuario=$_SESSION['usuario'];
+                        $tipo=$_SESSION['tipo'];
+                        switch($tipo){
+                            case 1://alumno
+                                $resultado=$mysqli->query("SELECT * FROM alumno WHERE Id_Alumno={$usuario}")or die("Error en: ".$mysqli->error);
+                                $row=$resultado->fetch_array(MYSQLI_ASSOC);
+                                echo $row['Nombres']." ".$row['Apellido_P']." ".$row['Apellido_M'];
+                            break;
+                            case 2://administrador
+                                $resultado=$mysqli->query("SELECT * FROM administrador WHERE Id_Administrador={$usuario}")or die("Error en: ".$mysqli->error);
+                                $row=$resultado->fetch_array(MYSQLI_ASSOC);
+                                echo $row['Nombres']." ".$row['Apellido_P']." ".$row['Apellido_M'];
+                            break;
+                            case 3://tutor
+                                $resultado=$mysqli->query("SELECT * FROM tutor WHERE Id_Tutor={$usuario}")or die("Error en: ".$mysqli->error);
+                                $row=$resultado->fetch_array(MYSQLI_ASSOC);
+                                echo $row['Nombres']." ".$row['Apellido_P']." ".$row['Apellido_M'];
+                            break;
+                            case 4://profesor
+                                $resultado=$mysqli->query("SELECT * FROM profesor WHERE Id_Profesor={$usuario}")or die("Error en: ".$mysqli->error);
+                                $row=$resultado->fetch_array(MYSQLI_ASSOC);
+                                echo $row['Nombres']." ".$row['Apellido_P']." ".$row['Apellido_M'];
+                            break;
+                            default: 
+                                echo "Bienvenido";
+                            break;
+                        }
+                        
+                    }
+                    else{
+                        echo "Bienvenido";
+                    }
+               ?>
+              </h5>
+        	  	<?php//mostrar menu adecuado
+                    switch($tipo){
+                        case 1://alumnos
+                            echo "
+                                <li class=\"mt\">
+                                    <a href=\"index.html\">
+                                        <i class=\"fa fa-dashboard\"></i>
+                                        <span>Usuarios</span>
+                                    </a>
+                                    <ul class=\"sub\">
+                                        <li><a  href=\"listar_administradores.php\">Administradores</a></li>
+                                        <li><a  href=\"listar_alumnos.php\">Alumnos</a></li>
+                                        <li><a  href=\"listar_profesores.php\">Profesores</a></li>
+                                        <li><a  href=\"listar_tutores.php\">Tutores</a></li>
+                                    </ul>
+                                </li>
+                                <li class=\"sub-menu\">
+                                    <a href=\"javascript:;\" >
+                                        <i class=\"fa fa-desktop\"></i>
+                                        <span>Control</span>
+                                    </a>
+                                    <ul class=\"sub\">
+                                        <li><a  href=\"#\">Periodo Escolar</a></li>
+                                        <li><a  href=\"asigna_tutor.php\">Asignar Tutores</a></li>
+                                        <li><a  href=\"#\">Listar Grupos</a></li>
+                                        <li><a  href=\"crear_grupos.php\">Crear Grupos</a></li>
+                                    </ul>
+                                </li>
+                                <li class=\"sub-menu\">
+                                    <a href=\"javascript:;\" >
+                                        <i class=\"fa fa-cogs\"></i>
+                                        <span>Calificaciones</span>
+                                    </a>
+                                    <ul class=\"sub\">
+                                        <li><a  href=\"calificaciones.php\">Control de Calificaciones</a></li>
+                                    </ul>
+                                </li>";
+                        break;
+                        case 2://administradores
 
-            <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class="fa fa-desktop"></i>
-                    <span>UI Elements</span>
-                </a>
-                <ul class="sub">
-                    <li><a  href="general.html">General</a></li>
-                    <li><a  href="buttons.html">Buttons</a></li>
-                    <li><a  href="panels.html">Panels</a></li>
-                </ul>
-            </li>
+                        break;
+                        case 3://tutores
 
-            <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class="fa fa-cogs"></i>
-                    <span>Components</span>
-                </a>
-                <ul class="sub">
-                    <li><a  href="calendar.html">Calendar</a></li>
-                    <li><a  href="gallery.html">Gallery</a></li>
-                    <li><a  href="todo_list.html">Todo List</a></li>
-                </ul>
-            </li>
-            <li class="sub-menu">
-                <a class="active" href="javascript:;" >
-                    <i class="fa fa-book"></i>
-                    <span>Extra Pages</span>
-                </a>
-                <ul class="sub">
-                    <li class="active"><a  href="blank.html">Blank Page</a></li>
-                    <li><a  href="login.html">Login</a></li>
-                    <li><a  href="lock_screen.html">Lock Screen</a></li>
-                </ul>
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class="fa fa-tasks"></i>
-                    <span>Forms</span>
-                </a>
-                <ul class="sub">
-                    <li><a  href="form_component.html">Form Components</a></li>
-                </ul>
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class="fa fa-th"></i>
-                    <span>Data Tables</span>
-                </a>
-                <ul class="sub">
-                    <li><a  href="basic_table.html">Basic Table</a></li>
-                    <li><a  href="responsive_table.html">Responsive Table</a></li>
-                </ul>
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class=" fa fa-bar-chart-o"></i>
-                    <span>Charts</span>
-                </a>
-                <ul class="sub">
-                    <li><a  href="morris.html">Morris</a></li>
-                    <li><a  href="chartjs.html">Chartjs</a></li>
-                </ul>
-            </li>
+                        break;
+                        case 4://profesores
 
+                        break;
+                    }
+                ?>
+            
         </ul>
         <!-- sidebar menu end-->
     </div>

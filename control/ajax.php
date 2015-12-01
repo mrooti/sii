@@ -740,5 +740,61 @@
 			}
 			$mysqli->close();
 		break;
+		case 40://baja de alumno
+			if(isset($_POST['id'])){
+				$service = seguridad($_POST['id']);
+				if($mysqli->query("DELETE FROM alumno WHERE Id_Alumno=".$service)){
+					echo "success";
+				}
+				else{
+					echo "error_1";
+				}
+			}
+			else{
+				echo "error_2";
+			}
+		break;
+		case 41:
+			if(isset($_POST['id'])){
+				$service = seguridad($_POST['id']);
+				if($mysqli->query("DELETE FROM profesor WHERE Id_Profesor=".$service)){
+					echo "success";
+				}
+				else{
+					echo "error_1";
+				}
+			}
+			else{
+				echo "error_2";
+			}
+		break;
+		case 42:
+			if(isset($_POST['id'])){
+				$service = seguridad($_POST['id']);
+				if($mysqli->query("DELETE FROM administrador WHERE Id_Administrador=".$service)){
+					echo "success";
+				}
+				else{
+					echo "error_1";
+				}
+			}
+			else{
+				echo "error_2";
+			}
+		break;
+		case 43:
+			if(isset($_POST['id'])){
+				$service = seguridad($_POST['id']);
+				if($mysqli->query("DELETE FROM tutor WHERE Id_Tutor=".$service)){
+					echo "success";
+				}
+				else{
+					echo "error_1";
+				}
+			}
+			else{
+				echo "error_2";
+			}
+		break;
 	}
 ?>
