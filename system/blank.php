@@ -86,6 +86,38 @@
             }
             return i;
         }
+        var tipo=localStorage.getItem("data_tipo_user");
+        $.post("../control/ajax.php?option=28",{permiso:tipo}).done(function(data){
+          if(data=="success"){
+
+          }
+          else if(data=="error_0"){
+            alert("Error en base de datos");
+          }
+          else if(data=="error_1"){
+            alert("No tienes permisos para acceder a esta pagina");
+            window.location.href="../index.php";
+          }
+          else if(data=="error_2"){
+            alert(data);
+            window.location.href="../index.php";
+          }
+          else if(data=="error_3"){
+            alert("No has iniciado sesión");
+            window.location.href="../index.php";
+          }  
+        });
+        $("#salir").click(function(){
+        $.post("../control/ajax.php?option=29",{terminar:tipo}).done(function(data){
+          if(data=="success"){
+            alert("Sesión finalizada");
+            window.location.href="../index.php";
+          }
+          else{
+            alert(data);
+          }
+        });
+      });
     </script>
 
   </body>

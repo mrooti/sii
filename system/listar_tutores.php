@@ -60,7 +60,7 @@
                                     <td class="hidden-phone"> '.$row['CURP'].' </td>
                                     <td>
                                         <button class="btn btn-success btn-xs" data-toggle="modal" href="#myModal'.$cont.'"><i class="fa fa-check" ></i></button>
-                                        <button class="btn btn-primary btn-xs"><i class="fa fa-pencil" ></i></button>
+                                        <a href="modificar_tutor.php?id='.$row['Id_Tutor'].'" class="btn btn-primary btn-xs"><i class="fa fa-pencil" ></i></a>
                                         <button class="btn btn-danger btn-xs delete" data="'.$row['Id_Tutor'].'" data-toggle="modal" href="#elimiModal" ><i class="fa fa-trash-o "></i></button>
                                     </td>
                                   </tr>';

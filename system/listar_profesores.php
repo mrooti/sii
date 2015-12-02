@@ -45,8 +45,8 @@
                               <thead>
                               <tr>
                                   <th><i class="fa fa-bookmark"></i> Profesores</th>
-                                  <th class="hidden-phone"><i class="fa fa-question-circle"></i>Cédula</th>
-                                  <th class="hidden-phone"><i class="fa fa-question-circle"></i> CURP</th>
+                                  <th class="hidden-phone"><i class="fa fa-question-circle"></i>CURP</th>
+                                  <th class="hidden-phone"><i class="fa fa-question-circle"></i> Cédula</th>
                                   <th><i class=" fa fa-edit"></i> Opciones</th>
                               </tr>
                               </thead>
@@ -62,7 +62,7 @@
                                     <td class="hidden-phone"> '.$row['Cedula'].' </td>
                                     <td>
                                         <button class="btn btn-success btn-xs" data-toggle="modal" href="#myModal'.$cont.'"><i class="fa fa-check" ></i></button>
-                                        <button class="btn btn-primary btn-xs"><i class="fa fa-pencil" ></i></button>
+                                        <a href="modificar_profesor.php?id='.$row['Id_Profesor'].'" class="btn btn-primary btn-xs"><i class="fa fa-pencil" ></i></a>
                                         <button class="btn btn-danger btn-xs delete" data="'.$row['Id_Profesor'].'" data-toggle="modal" href="#elimiModal" ><i class="fa fa-trash-o "></i></button>
                                     </td>
                                   </tr>';

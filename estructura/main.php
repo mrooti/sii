@@ -3,7 +3,7 @@
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
         
-        	  <p class="centered"><a href="blank.php"><img src="../assets/img/perfil.jpg" class="img-circle" width="60"></a></p>
+        	  <p class="centered"><a href="blank.php"><img src="../assets/img/ui-danro.jpg" class="img-circle" width="60"></a></p>
         	  <h5 class="centered">
                <?php
                     include("../control/connection.php");
@@ -60,6 +60,7 @@
                                 ";
                         break;
                         case 2://administradores
+                            //<li><a  href=\"#\">Periodo Escolar</a></li>
                             echo "
                                 <li class=\"mt\">
                                     <a href=\"index.html\">
@@ -79,9 +80,9 @@
                                         <span>Control</span>
                                     </a>
                                     <ul class=\"sub\">
-                                        <li><a  href=\"#\">Periodo Escolar</a></li>
                                         <li><a  href=\"asigna_tutor.php\">Asignar Tutores</a></li>
-                                        <li><a  href=\"#\">Listar Grupos</a></li>
+                                        
+                                        <li><a href=\"materias.php\">Materias</a></li>
                                         <li><a  href=\"crear_grupos.php\">Crear Grupos</a></li>
                                         <li><a href=\"constancias.php\">Constancia</a></li>
                                     </ul>

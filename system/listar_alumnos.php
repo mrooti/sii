@@ -60,7 +60,7 @@
                                     <td class="hidden-phone"> '.$row['Curp'].' </td>
                                     <td>
                                         <button class="btn btn-success btn-xs" data-toggle="modal" href="#myModal'.$cont.'"><i class="fa fa-check" ></i></button>
-                                        <button class="btn btn-primary btn-xs"><i class="fa fa-pencil" ></i></button>
+                                        <a class="btn btn-primary btn-xs" href="modificar_alumno.php?id='.$row['Id_Alumno'].'"><i class="fa fa-pencil" ></i></a>
                                         <button class="btn btn-danger btn-xs delete" data="'.$row['Id_Alumno'].'" data-toggle="modal" href="#elimiModal" ><i class="fa fa-trash-o "></i></button>
                                     </td>
                                   </tr>';
@@ -198,7 +198,6 @@
             }
         });
     });
-    //comprobar
     $.post("../control/ajax.php?option=28",{permiso:"2"}).done(function(data){
       if(data=="success"){
 
@@ -229,8 +228,8 @@
           alert(data);
         }
       });
-    });                 
-});    
+    });
+  });
 </script>
   </body>
 </html>

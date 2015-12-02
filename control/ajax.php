@@ -794,6 +794,40 @@
 			}
 			$mysqli->close();
 		break;
+		case 32://baja materia
+			if(isset($_POST['materia'])&&!empty($_POST['materia'])){
+				$materia=seguridad($_POST['materia']);
+				if($mysqli->query("UPDATE materia SET Estado='0' WHERE Id_Materia={$materia}")){
+					echo "success";
+				}
+				else{
+					echo "error_0";
+				}
+			}else{
+				echo "error_1";
+			}
+			$mysqli->close();
+		break;
+		case 33://modificar materia
+			if(isset($_GET['id'])&&!empty($_GET['id'])&&isset($_POST['titulo'])&&isset($_POST['grado'])){
+				$id=seguridad($_GET['id']);
+				$titulo=seguridad($_POST['titulo']);
+				$creditos=seguridad($_POST['creditos']);
+				$codigo=seguridad($_POST['codigo']);
+				$grado=seguridad($_POST['grado']);
+				if($mysqli->query("UPDATE materia SET Titulo='{$titulo}', Creditos='{$creditos}', Codigo='{$codigo}', Grado='{$grado}' WHERE Id_Materia={$id}")){
+					echo "success";
+				}
+				else{
+					echo "error_0";
+				}
+
+			}
+			else{
+				echo "error_1";
+			}
+			$mysqli->close();
+		break;
 		case 40://baja de alumno
 			if(isset($_POST['id'])){
 				$service = seguridad($_POST['id']);
@@ -849,6 +883,121 @@
 			else{
 				echo "error_2";
 			}
+		break;
+		case 44://MODIFICAR ALUMNO
+		if(isset($_POST['nombre'])&&isset($_POST['apellido_p'])&&isset($_POST['apellido_m'])&&isset($_GET['ide'])){
+				$ide=seguridad($_GET['ide']);
+				$nombre=seguridad($_POST['nombre']);
+				$apellido_p=seguridad($_POST['apellido_p']);
+				$apellido_m=seguridad($_POST['apellido_m']);
+				$sexo=seguridad($_POST['sexo']);
+				$direccion=seguridad($_POST['direccion']);
+				$localidad=seguridad($_POST['localidad']);
+				$codigo=seguridad($_POST['codigo']);
+				$fecha=seguridad($_POST['fecha']);
+				$curp=seguridad($_POST['curp']);
+				$contrasena=seguridad($_POST['contrasena']);
+				$contrasena=hash('sha256', md5($contrasena));//encriptando contrasena
+				$ruta="Img/alumno/";//ruta para imagenes
+				if($mysqli->query("UPDATE alumno SET Nombres='{$nombre}', Apellido_P='{$apellido_p}', Apellido_M='{$apellido_m}', Sexo='{$sexo}', Direccion='{$direccion}', Id_Localidad='{$localidad}', CP='{$codigo}', Fecha_Nacimiento='{$fecha}', Curp='{$curp}', Img='..', Password='{$contrasena}', Estado='1' WHERE Id_Alumno='{$ide}'")){
+					echo "success";
+				}
+				else{
+					echo "error_1";
+				}
+			}
+			else{
+				echo "error_2";
+			}
+			$mysqli->close();
+		break;
+		case 45://MODIFICAR ADMINISTRADOR
+		if(isset($_POST['nombre'])&&isset($_POST['apellido_p'])&&isset($_POST['apellido_m'])&&isset($_GET['ide'])){
+				$ide=seguridad($_GET['ide']);
+				$nombre=seguridad($_POST['nombre']);
+				$apellido_p=seguridad($_POST['apellido_p']);
+				$apellido_m=seguridad($_POST['apellido_m']);
+				$sexo=seguridad($_POST['sexo']);
+				$direccion=seguridad($_POST['direccion']);
+				$localidad=seguridad($_POST['localidad']);
+				$codigo=seguridad($_POST['codigo']);
+				$fecha=seguridad($_POST['fecha']);
+				$curp=seguridad($_POST['curp']);
+				$mail=seguridad($_POST['mail']);
+				$telefono=seguridad($_POST['telefono']);
+				$contrasena=seguridad($_POST['contrasena']);
+				$contrasena=hash('sha256', md5($contrasena));//encriptando contrasena
+				$ruta="Img/alumno/";//ruta para imagenes
+				if($mysqli->query("UPDATE administrador SET Nombres='{$nombre}', Apellido_P='{$apellido_p}', Apellido_M='{$apellido_m}', Sexo='{$sexo}', Direccion='{$direccion}', Id_Localidad='{$localidad}', CP='{$codigo}', Fecha_Nacimiento='{$fecha}', Curp='{$curp}', Email='{$mail}', Telefono='{$telefono}', Img='..', Password='{$contrasena}', Estado='1' WHERE Id_Administrador='{$ide}'")){
+					echo "success";
+				}
+				else{
+					echo "error_1";
+				}
+			}
+			else{
+				echo "error_2";
+			}
+			$mysqli->close();
+		break;
+		case 46://modificar tutores
+			if(isset($_POST['nombre'])&&isset($_POST['apellido_p'])&&isset($_POST['apellido_m'])&&isset($_GET['ide'])){
+				$ide=seguridad($_GET['ide']);
+				$nombre=seguridad($_POST['nombre']);
+				$apellido_p=seguridad($_POST['apellido_p']);
+				$apellido_m=seguridad($_POST['apellido_m']);
+				$sexo=seguridad($_POST['sexo']);
+				$direccion=seguridad($_POST['direccion']);
+				$localidad=seguridad($_POST['localidad']);
+				$codigo=seguridad($_POST['codigo']);
+				$fecha=seguridad($_POST['fecha']);
+				$curp=seguridad($_POST['curp']);
+				$mail=seguridad($_POST['mail']);
+				$telefono=seguridad($_POST['telefono']);
+				$contrasena=seguridad($_POST['contrasena']);
+				$contrasena=hash('sha256', md5($contrasena));//encriptando contrasena
+				$ruta="Img/alumno/";//ruta para imagenes
+				if($mysqli->query("UPDATE tutor SET Nombres='{$nombre}', Apellido_P='{$apellido_p}', Apellido_M='{$apellido_m}', Sexo='{$sexo}', Direccion='{$direccion}', Id_Localidad='{$localidad}', CP='{$codigo}', Fecha_Nacimiento='{$fecha}', Curp='{$curp}', Email='{$mail}', Telefono='{$telefono}', Img='..', Password='{$contrasena}', Estado='1' WHERE Id_Tutor='{$ide}'")){
+					echo "success";
+				}
+				else{
+					echo "error_1";
+				}
+			}
+			else{
+				echo "error_2";
+			}
+			$mysqli->close();
+		break;
+		case 47://modificar profesor
+			if(isset($_POST['nombre'])&&isset($_POST['apellido_p'])&&isset($_POST['apellido_m'])&&isset($_GET['ide'])){
+				$ide=seguridad($_GET['ide']);
+				$nombre=seguridad($_POST['nombre']);
+				$apellido_p=seguridad($_POST['apellido_p']);
+				$apellido_m=seguridad($_POST['apellido_m']);
+				$sexo=seguridad($_POST['sexo']);
+				$direccion=seguridad($_POST['direccion']);
+				$localidad=seguridad($_POST['localidad']);
+				$codigo=seguridad($_POST['codigo']);
+				$fecha=seguridad($_POST['fecha']);
+				$curp=seguridad($_POST['curp']);
+				$mail=seguridad($_POST['mail']);
+				$telefono=seguridad($_POST['telefono']);
+				$contrasena=seguridad($_POST['contrasena']);
+				$contrasena=hash('sha256', md5($contrasena));//encriptando contrasena
+				$ruta="Img/alumno/";//ruta para imagenes
+				$cedula=seguridad($_POST['cedula']);
+				if($mysqli->query("UPDATE profesor SET Nombres='{$nombre}', Apellido_P='{$apellido_p}', Apellido_M='{$apellido_m}', Sexo='{$sexo}', Direccion='{$direccion}', Id_Localidad='{$localidad}', CP='{$codigo}', Fecha_Nacimiento='{$fecha}', Cedula='{$cedula}', Curp='{$curp}', Email='{$mail}', Telefono='{$telefono}', Img='..', Password='{$contrasena}', Estado='1' WHERE Id_Profesor='{$ide}'")){
+					echo "success";
+				}
+				else{
+					echo "error_1";
+				}
+			}
+			else{
+				echo "error_2";
+			}
+			$mysqli->close();
 		break;
 	}
 ?>

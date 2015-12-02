@@ -76,9 +76,12 @@
         			alert("Sesión iniciada correctamente");
         			window.location.href="system/blank.php";
         		}
-        		else{
-        			alert(data);
+        		else if(data=="error_1"){
+        			alert("Usuario Incorrecto");
         		}
+                else{
+                    alert("No debes dejar ningún campo vacío")
+                }
         	});
         	return false;
         });
