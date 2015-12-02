@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <title>Lista de Materias</title>
+    <title>Lista de Periodos</title>
   <?php
       include("../control/connection.php");
       include("../estructura/head.php");
@@ -34,15 +34,15 @@
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper site-min-height">
-          	<h3><i class="fa fa-angle-right"></i> Listado de Materias</h3>
+          	<h3><i class="fa fa-angle-right"></i> Listado de Periodos</h3>
           	<div class="row mt">
           		<div class="col-lg-12">
             		<div class="form-panel">
-                      <h4 class="mb"><i class="fa fa-angle-right"></i>Materias Activas</h4>
+                      <h4 class="mb"><i class="fa fa-angle-right"></i>Periodos Activos</h4>
                       <div class="form-horizontal style-form">
                           <div class="form-group">
                             <div class="col-sm-12" style="text-align:center;">
-                              <a class="btn btn-round btn-success" href="alta_materia.php">Nueva Materia</a>
+                              <a class="btn btn-round btn-success" href="alta_periodo.php">Nuevo Periodo</a>
                             </div>
                           </div>
                           <div class="row">
@@ -52,25 +52,21 @@
                                       <hr>
                                         <thead>
                                         <tr>
-                                            <th><i class="fa fa-bookmark"></i> Titulo</th>
-                                            <th><i class="fa fa-bookmark"></i> Grado</th>
-                                            <th><i class="fa fa-bookmark"></i> Creditos</th>
-                                            <th><i class="fa fa-bookmark"></i> Código</th>
+                                            <th><i class="fa fa-bookmark"></i> Fecha de Inicio</th>
+                                            <th><i class="fa fa-bookmark"></i> Fecha de Fin</th>
                                             <th><i class=" fa fa-edit"></i> Opción</th>
                                             <th></th>
                                         </tr>
                                         </thead>
                                         <tbody id="materias">
                                           <?php
-                                            $resultado=$mysqli->query("SELECT * FROM materia WHERE Estado='1'")or die("Error en: ".$mysqli->error);
+                                            $resultado=$mysqli->query("SELECT * FROM periodo WHERE Estado='1'")or die("Error en: ".$mysqli->error);
                                             while($row=$resultado->fetch_array(MYSQLI_ASSOC)){
                                               echo "
                                                     <tr>
-                                                      <td>{$row['Titulo']}</td>
-                                                      <td>{$row['Grado']}</td>
-                                                      <td>{$row['Creditos']}</td>
-                                                      <td>{$row['Codigo']}</td>
-                                                      <td><button class=\"btn btn-success btn-xs\" onclick=\"elegir(1,{$row['Id_Materia']});\">Editar</button> <button class=\"btn btn-danger btn-xs\" onclick=\"elegir(2,{$row['Id_Materia']});\">Eliminar</button></td>
+                                                      <td>{$row['Fecha_Inicio']}</td>
+                                                      <td>{$row['Fecha_Fin']}</td>
+                                                      <td><button class=\"btn btn-danger btn-xs\" onclick=\"elegir(2,{$row['Id_Periodo']});\">Eliminar</button></td>
                                                     </tr>
                                                   ";
                                             }
@@ -110,11 +106,8 @@
     $("#info").hide();
     function elegir(option,id){
       switch(option){
-        case 1:
-          window.location.href="modificar_materia.php?id="+id;
-        break;
         case 2:
-          $.post("../control/ajax.php?option=32",{materia:id}).done(function(data){
+          $.post("../control/ajax.php?option=34",{periodo:id}).done(function(data){
             if(data=="success"){
               $("#info").html("<h3>Baja correcta</h3>");
               $("#info").slideDown(2000);

@@ -443,7 +443,7 @@
 		case 21://obtener profesor para captura de calificaciones
 			if(isset($_POST['profesor'])&&!empty($_POST['profesor'])){
 				$profesor=seguridad($_POST['profesor']);
-				$resultado=$mysqli->query("SELECT DISTINCT Id_Cursa_Materia, m.Titulo, m.Grado, Grupo FROM cursa_materia cm INNER JOIN materia m ON m.Id_Materia=cm.Id_Materia WHERE Id_Profesor={$profesor} AND cm.Estado='1'")or die("Error en: ".$mysqli->error);
+				$resultado=$mysqli->query("SELECT DISTINCT Id_Cursa_Materia,m.Id_Materia, m.Titulo, m.Grado, Grupo FROM cursa_materia cm INNER JOIN materia m ON m.Id_Materia=cm.Id_Materia WHERE Id_Profesor={$profesor} AND cm.Estado='1'")or die("Error en: ".$mysqli->error);
 				if(!$resultado->num_rows>0){
 					echo "<tr><td>No hay grupos asignados a este profesor</td></tr>";
 				}
@@ -453,7 +453,7 @@
 							<td>{$row['Titulo']}</td>
 							<td>{$row['Grado']}</td>
 							<td>{$row['Grupo']}</td>
-							<td><button class=\"btn btn-success btn-xs\" onclick=\"elegir(2,{$row['Id_Cursa_Materia']});\">Ver Calificaciones</button><button class=\"btn btn-primary btn-xs\" onclick=\"elegir(3,{$row['Id_Cursa_Materia']});\">Capturar</button></td>
+							<td><button class=\"btn btn-success btn-xs\" onclick=\"elegir2(2,{$row['Id_Cursa_Materia']},{$row['Id_Materia']});\">Ver Calificaciones</button><button class=\"btn btn-primary btn-xs\" onclick=\"elegir(3,{$row['Id_Cursa_Materia']});\">Capturar</button></td>
 						</tr>
 					";//opcion 2 para eliminar grupo 
 				}
@@ -465,10 +465,11 @@
 		case 22://mostrar todas las calificaciones registradas
 			if(isset($_POST['cursa_materia'])&&!empty($_POST['cursa_materia'])){
 				$cursa=seguridad($_POST['cursa_materia']);
-				$resultado=$mysqli->query("SELECT * FROM cursa_materia WHERE Id_Cursa_Materia={$cursa}")or die("Error en: ".$mysqli->error);
+				$materia=seguridad($_POST['materia']);
+				$resultado=$mysqli->query("SELECT * FROM cursa_materia WHERE Id_Cursa_Materia={$cursa} AND Id_Materia={$materia}")or die("Error en: ".$mysqli->error);
 				$row=$resultado->fetch_array(MYSQLI_ASSOC);
 				$profesor=$row['Id_Profesor'];
-				$resultado=$mysqli->query("SELECT Id_Calificacion_Curso, a.Nombres, a.Apellido_P, a.Apellido_M, Unidad, Calificacion FROM calificacion_curso cc INNER JOIN cursa_materia cm ON cm.Id_Cursa_Materia=cc.Id_Cursa_Materia INNER JOIN alumno a ON a.Id_Alumno=cm.Id_Alumno WHERE Id_Profesor={$profesor} AND cc.Estado='1'")or die("Error en: ".$mysqli->error);
+				$resultado=$mysqli->query("SELECT Id_Calificacion_Curso, a.Nombres, a.Apellido_P, a.Apellido_M, Unidad, Calificacion FROM calificacion_curso cc INNER JOIN cursa_materia cm ON cm.Id_Cursa_Materia=cc.Id_Cursa_Materia INNER JOIN alumno a ON a.Id_Alumno=cm.Id_Alumno WHERE Id_Profesor={$profesor} AND cm.Id_Materia={$materia} AND cc.Estado='1'")or die("Error en: ".$mysqli->error);
 				if(!$resultado->num_rows>0){
 					echo "<tr><td>No calificaciones registradas</td></tr>";
 				}
@@ -822,6 +823,21 @@
 					echo "error_0";
 				}
 
+			}
+			else{
+				echo "error_1";
+			}
+			$mysqli->close();
+		break;
+		case 34://baja periodo
+			if(isset($_POST['periodo'])&&!empty($_POST['periodo'])){
+				$periodo=seguridad($_POST['periodo']);
+				if($mysqli->query("UPDATE periodo SET Estado='0' WHERE Id_Periodo={$periodo}")){
+					echo "success";
+				}
+				else{
+					echo "error_0";
+				}
 			}
 			else{
 				echo "error_1";

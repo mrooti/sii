@@ -236,9 +236,25 @@
             $("#info").slideDown(2000);
             $("#info").slideUp(4000);
           }
-          $.post("../control/ajax.php?option=22",{cursa_materia:localStorage.getItem("data_cursa")}).done(function(data){
+          /*$.post("../control/ajax.php?option=22",{cursa_materia:localStorage.getItem("data_cursa")}).done(function(data){
+            $("#calificaciones_actuales").html(data);
+          });*/
+        break;
+      }
+    }
+    function elegir2(option,id,materia){
+      switch(option){
+        case 2:
+        //mostrar todas las calificaciones (cursa materia)
+          localStorage.setItem("data_cursa",id);
+
+          $.post("../control/ajax.php?option=22",{cursa_materia:id,materia:materia}).done(function(data){
             $("#calificaciones_actuales").html(data);
           });
+          $("#in_unidad").hide("slow");
+          $("#lista_captura").hide("slow");
+          $("#boton_capturar").hide("slow");
+          $("#lista_cali_ac").slideDown("slow");
         break;
       }
     }
